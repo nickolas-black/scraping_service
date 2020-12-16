@@ -47,24 +47,28 @@ def rabota(url):
     resp = requests.get(url, headers=headers)
     if resp.status_code == 200:
         soup = BS(resp.content, 'html.parser')
-        table = soup.find('table', id='ctl00_content_vacancyList_gridList')
-        if table:
-            tr_lst = table.find_all('tr', attrs={'id': True})
-            for tr in tr_lst:
-                div = tr.find('div', attrs={'class': 'card-body'})
-                if div:
-                    title = div.find('h2', attrs={'class': 'card-title'})
-                    href = title.a['href']
-                    content = div.p.text
-                    company = 'No name'
-                    p = div.find('p', attrs={'class': 'company-name'})
-                    if p:
-                        company = p.a.text
-                    jobs.append({'title': title.text, 'url': domain + href,
-                                 'description': content, 'company': company})
+        new_jobs = soup.find('div', attrs={'f-vacancylist-newnotfound'})
+        if not new_jobs:
+            table = soup.find('table', id='ctl00_content_vacancyList_gridList')
+            if table:
+                tr_lst = table.find_all('tr', attrs={'id': True})
+                for tr in tr_lst:
+                    div = tr.find('div', attrs={'class': 'card-body'})
+                    if div:
+                        title = div.find('h2', attrs={'class': 'card-title'})
+                        href = title.a['href']
+                        content = div.p.text
+                        company = 'No name'
+                        p = div.find('p', attrs={'class': 'company-name'})
+                        if p:
+                            company = p.a.text
+                        jobs.append({'title': title.text, 'url': domain + href,
+                                     'description': content, 'company': company})
 
+            else:
+                errors.append({'url': url, 'title': "Table does not exists"})
         else:
-            errors.append({'url': url, 'title': "Table does not exists"})
+            errors.append({'url': url, 'title': "Page is empty"})
     else:
         errors.append({'url': url, 'title': "Page do not response"})
 
