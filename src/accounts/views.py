@@ -71,7 +71,7 @@ def delete_view(request):
             messages.error(request, 'Пользователь удален :(')
     return redirect('home')
 
-
+#сама форма для view
 def contact(request):
     if request.method == 'POST':
         contact_form = ContactForm(request.POST or None)
