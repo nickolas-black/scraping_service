@@ -64,6 +64,7 @@ class UserUpdateForm(forms.Form):
         model = User
         fields = ('city', 'language', 'send_email')
 
+# форма для обратной связи пользователя с админом
 
 class ContactForm(forms.Form):
     city = forms.CharField(
