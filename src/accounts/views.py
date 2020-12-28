@@ -37,7 +37,7 @@ def register_view(request):
                       {'new_user': new_user})
     return render(request, 'accounts/register.html', {'form': form})
 
-
+# добавление формы для обратной связи
 def update_view(request):
     contact_form = ContactForm()
     if request.user.is_authenticated:
